@@ -19,6 +19,7 @@ export async function installDocker() {
       "-c",
       "HOMEBREW_NO_AUTO_UPDATE=1 brew install docker orbstack",
     ]);
+    await exec("sh", ["-c", "orb start"]);
     return;
   }
 }
