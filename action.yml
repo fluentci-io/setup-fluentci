@@ -1,0 +1,12 @@
+name: Setup FluentCI
+description: Download, install, and setup FluentCI CLI to your path.
+author: Tsiry Sandratraina
+branding:
+  icon: play-circle
+  color: purple
+outputs:
+  version:
+    description: FluentCI CLI version installed
+runs:
+  using: node16
+  main: dist/action.js

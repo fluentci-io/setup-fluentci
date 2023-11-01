@@ -1,0 +1,25 @@
+name: Setup FluentCI
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  setup-fluentci:
+    runs-on: ${{ matrix.os }}
+    continue-on-error: true
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup FluentCI
+        uses: ./
+      - name: Verify FluentCI
+        run: fluentci --version
+      - name: Verify Deno
+        run: deno --version
+      - name: Verify Dagger
+        run: dagger version
