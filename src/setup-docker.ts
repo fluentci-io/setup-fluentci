@@ -15,7 +15,7 @@ export async function installDocker() {
   }
 
   if (platform === "darwin") {
-    await exec("brew", ["install", "docker", "colima"]);
+    await exec("sh", ["-c", "HOMEBREW_NO_AUTO_UPDATE=1 brew install docker"]);
     await exec("colima", ["start"]);
     return;
   }
