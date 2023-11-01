@@ -11,8 +11,10 @@ export async function installDocker() {
         return;
     }
     if (platform === "darwin") {
-        await exec("sh", ["-c", "HOMEBREW_NO_AUTO_UPDATE=1 brew install docker"]);
-        await exec("colima", ["start"]);
+        await exec("sh", [
+            "-c",
+            "HOMEBREW_NO_AUTO_UPDATE=1 brew install docker orbstack",
+        ]);
         return;
     }
 }
