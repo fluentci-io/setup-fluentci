@@ -12,6 +12,7 @@ export async function installDocker() {
     }
     if (platform === "darwin") {
         await exec("sh", ["-c", "brew install docker orbstack"]);
+        await exec("sh", ["-c", "brew install orbstack --cask"]);
         await exec("sh", ["-c", "orb start"]);
         return;
     }
