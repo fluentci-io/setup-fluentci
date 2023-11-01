@@ -11,10 +11,7 @@ export async function installDocker() {
         return;
     }
     if (platform === "darwin") {
-        await exec("sh", [
-            "-c",
-            "HOMEBREW_NO_AUTO_UPDATE=1 brew install docker orbstack",
-        ]);
+        await exec("sh", ["-c", "brew install docker orbstack"]);
         await exec("sh", ["-c", "orb start"]);
         return;
     }
