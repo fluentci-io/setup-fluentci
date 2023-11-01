@@ -23,3 +23,5 @@ jobs:
         run: deno --version
       - name: Verify Dagger
         run: dagger version
+      - name: Run Hello World
+        run: fluentci run base_pipeline
