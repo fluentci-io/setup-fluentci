@@ -22,7 +22,9 @@ export default async (): Promise<{
     "install",
     "-A",
     "-r",
-    "https://cli.fluentci.io -n fluentci",
+    "https://cli.fluentci.io",
+    "-n",
+    "fluentci",
   ]);
   await exec("sh", [
     "-c",
