@@ -2,6 +2,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import * as action from "@actions/core";
 import { getExecOutput, exec } from "@actions/exec";
+import { installDocker } from "./setup-docker.js";
 
 export default async (): Promise<{
   version: string;
@@ -10,6 +11,8 @@ export default async (): Promise<{
   if (process.platform === "win32") {
     throw new Error("FluentCI is not supported on Windows");
   }
+
+  await installDocker();
 
   await exec("sh", [
     "-c",
