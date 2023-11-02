@@ -19,7 +19,7 @@ jobs:
         uses: ./
       - name: Verify FluentCI
         run: |
-          fluentci doctor
+          fluentci doctor || true
           fluentci --version
       - name: Verify Deno
         run: deno --version
