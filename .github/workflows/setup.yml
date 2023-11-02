@@ -18,7 +18,9 @@ jobs:
       - name: Setup FluentCI
         uses: ./
       - name: Verify FluentCI
-        run: fluentci --version
+        run: |
+          fluentci doctor
+          fluentci --version
       - name: Verify Deno
         run: deno --version
       - name: Verify Dagger
