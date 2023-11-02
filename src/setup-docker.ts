@@ -18,6 +18,7 @@ export async function installDocker() {
     await exec("brew", ["update"]);
     await exec("sh", ["-c", "brew install docker orbstack"]);
     await exec("sh", ["-c", "orb config set setup.use_admin false"]);
+    await exec("sh", ["-c", "orb stop"]);
     await exec("sh", ["-c", "orb start"]);
     return;
   }
