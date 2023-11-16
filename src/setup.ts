@@ -21,6 +21,10 @@ export default async (): Promise<{
 
   action.addPath(join(homedir(), ".deno", "bin"));
 
+  await exec("deno", ["upgrade", "--version", "1.37.2"]);
+
+  await exec("deno", ["--version"]);
+
   await exec("deno", [
     "install",
     "-A",
