@@ -21,8 +21,6 @@ export default async (): Promise<{
 
   action.addPath(join(homedir(), ".deno", "bin"));
 
-  await exec("deno", ["upgrade", "--version", "1.37.2"]);
-
   await exec("deno", ["--version"]);
 
   await exec("deno", [
@@ -35,7 +33,7 @@ export default async (): Promise<{
   ]);
   await exec("sh", [
     "-c",
-    "curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.8.8 sh",
+    "curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.9.3 sh",
   ]);
 
   await exec("sudo", ["mv", "bin/dagger", "/usr/local/bin"]);

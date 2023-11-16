@@ -14,6 +14,7 @@ export default async () => {
         "curl -fsSL https://deno.land/x/install/install.sh | sh",
     ]);
     action.addPath(join(homedir(), ".deno", "bin"));
+    await exec("deno", ["--version"]);
     await exec("deno", [
         "install",
         "-A",
@@ -24,7 +25,7 @@ export default async () => {
     ]);
     await exec("sh", [
         "-c",
-        "curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.8.8 sh",
+        "curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.9.3 sh",
     ]);
     await exec("sudo", ["mv", "bin/dagger", "/usr/local/bin"]);
     const version = await verifyFluentCI("fluentci");
