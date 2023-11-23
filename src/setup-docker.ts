@@ -17,7 +17,7 @@ export async function installDocker() {
   if (platform === "darwin") {
     await exec("brew", ["update"]);
     await exec("sh", ["-c", "brew install docker lima"]);
-    await exec("sh", ["-c", "lima start template://docker"]);
+    await exec("sh", ["-c", "limactl start template://docker"]);
     return;
   }
 }
