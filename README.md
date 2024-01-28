@@ -22,7 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: FluentCI
-        uses: fluentci-io/setup-fluentci@v2
+        uses: fluentci-io/setup-fluentci@v3
       - name: Run Hello World
         run: fluentci run base_pipeline
 ```
