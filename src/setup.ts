@@ -33,7 +33,7 @@ export default async (): Promise<{
   ]);
   await exec("sh", [
     "-c",
-    "curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.9.7 sh",
+    "curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.9.8 sh",
   ]);
 
   await exec("sudo", ["mv", "bin/dagger", "/usr/local/bin"]);
