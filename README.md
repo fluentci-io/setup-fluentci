@@ -22,7 +22,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: FluentCI
-        uses: fluentci-io/setup-fluentci@v3
+        uses: fluentci-io/setup-fluentci@v4
+        with:
+          dagger-version: 0.9.10
       - name: Run Hello World
         run: fluentci run base_pipeline
 ```

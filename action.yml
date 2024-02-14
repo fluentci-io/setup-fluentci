@@ -4,6 +4,11 @@ author: Tsiry Sandratraina
 branding:
   icon: play-circle
   color: purple
+inputs:
+  dagger-version:
+    description: Dagger version to install
+    required: false
+    default: 0.9.10
 outputs:
   version:
     description: FluentCI CLI version installed

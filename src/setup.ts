@@ -4,7 +4,9 @@ import * as action from "@actions/core";
 import { getExecOutput, exec } from "@actions/exec";
 import { installDocker } from "./setup-docker.js";
 
-export default async (): Promise<{
+export default async ({
+  daggerVersion,
+}): Promise<{
   version: string;
 }> => {
   // throw error on unsupported platforms (windows)
@@ -33,7 +35,7 @@ export default async (): Promise<{
   ]);
   await exec("sh", [
     "-c",
-    "curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.9.8 sh",
+    `curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=${daggerVersion} sh`,
   ]);
 
   await exec("sudo", ["mv", "bin/dagger", "/usr/local/bin"]);

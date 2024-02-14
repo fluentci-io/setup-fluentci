@@ -6,7 +6,9 @@ if (!process.env.RUNNER_TEMP) {
   process.env.RUNNER_TEMP = tmpdir();
 }
 
-setup()
+setup({
+  daggerVersion: action.getInput("dagger-version"),
+})
   .then(({ version }) => {
     action.setOutput("version", version);
   })

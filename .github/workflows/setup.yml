@@ -17,6 +17,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Setup FluentCI
         uses: ./
+        with:
+          dagger-version: 0.9.8
       - name: Verify FluentCI
         run: |
           fluentci doctor || true

@@ -3,7 +3,7 @@ import { join } from "node:path";
 import * as action from "@actions/core";
 import { getExecOutput, exec } from "@actions/exec";
 import { installDocker } from "./setup-docker.js";
-export default async () => {
+export default async ({ daggerVersion, }) => {
     // throw error on unsupported platforms (windows)
     if (process.platform === "win32") {
         throw new Error("FluentCI is not supported on Windows");
@@ -25,7 +25,7 @@ export default async () => {
     ]);
     await exec("sh", [
         "-c",
-        "curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.9.8 sh",
+        `curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=${daggerVersion} sh`,
     ]);
     await exec("sudo", ["mv", "bin/dagger", "/usr/local/bin"]);
     const version = await verifyFluentCI("fluentci");
