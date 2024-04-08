@@ -24,7 +24,7 @@ jobs:
       - name: FluentCI
         uses: fluentci-io/setup-fluentci@v4
         with:
-          dagger-version: 0.10.0
+          dagger-version: 0.11.0
       - name: Run Hello World
         run: fluentci run base_pipeline
 ```
