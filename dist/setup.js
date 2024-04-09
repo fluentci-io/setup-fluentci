@@ -8,7 +8,9 @@ export default async ({ daggerVersion, wasm, pipeline, args, }) => {
     if (process.platform === "win32") {
         throw new Error("FluentCI is not supported on Windows");
     }
-    await installDocker();
+    if (!wasm) {
+        await installDocker();
+    }
     await exec("sh", [
         "-c",
         "curl -fsSL https://deno.land/x/install/install.sh | sh",

@@ -1,4 +1,4 @@
-name: Setup FluentCI
+name: Setup FluentCI With Params
 
 on:
   push:

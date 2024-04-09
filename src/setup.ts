@@ -17,7 +17,9 @@ export default async ({
     throw new Error("FluentCI is not supported on Windows");
   }
 
-  await installDocker();
+  if (!wasm) {
+    await installDocker();
+  }
 
   await exec("sh", [
     "-c",

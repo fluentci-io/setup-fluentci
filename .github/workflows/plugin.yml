@@ -1,4 +1,4 @@
-name: Setup FluentCI
+name: Setup FluentCI With Plugin
 
 on:
   push:
@@ -8,14 +8,16 @@ on:
 
 jobs:
   setup-fluentci:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     continue-on-error: true
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
     steps:
       - uses: actions/checkout@v2
       - name: Setup FluentCI
         uses: ./
         with:
-          dagger-version: 0.10.0
           wasm: true
           pipeline: base_pipeline
           args: hello Tsiry Sandratraina
