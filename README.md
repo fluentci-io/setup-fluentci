@@ -22,12 +22,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: FluentCI
-        uses: fluentci-io/setup-fluentci@v4
+        uses: fluentci-io/setup-fluentci@v5
         with:
           dagger-version: 0.11.0
       - name: Run Hello World
         run: fluentci run base_pipeline
 ```
+
+## Inputs
+
+| Key            | Description                             | Default |
+| -------------- | --------------------------------------- | ------- |
+| dagger-version | The version of the Dagger Engine to use | 0.11.0  |
+| pipeline       | The pipeline (module) to execute                   |         |
+| wasm           | Run the WebAssembly version of the pipeline (if available) |    |
+| args     | Arguments to pass to the pipeline |         |
+
 
 ## License
 

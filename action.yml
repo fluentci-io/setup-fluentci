@@ -5,6 +5,15 @@ branding:
   icon: play-circle
   color: purple
 inputs:
+  pipeline:
+    description: Pipeline to use
+    required: false
+  wasm:
+    description: use WebAssembly
+    required: false
+  args:
+    description: Arguments to pass to FluentCI CLI
+    required: false
   dagger-version:
     description: Dagger version to install
     required: false

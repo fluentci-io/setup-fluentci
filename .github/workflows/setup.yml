@@ -18,7 +18,7 @@ jobs:
       - name: Setup FluentCI
         uses: ./
         with:
-          dagger-version: 0.9.8
+          dagger-version: 0.10.0
       - name: Verify FluentCI
         run: |
           fluentci doctor || true

@@ -1,0 +1,20 @@
+name: Setup FluentCI
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  setup-fluentci:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup FluentCI
+        uses: ./
+        with:
+          dagger-version: 0.10.0
+          pipeline: base_pipeline
+          args: hello

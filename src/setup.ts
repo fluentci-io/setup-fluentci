@@ -6,6 +6,9 @@ import { installDocker } from "./setup-docker.js";
 
 export default async ({
   daggerVersion,
+  wasm,
+  pipeline,
+  args,
 }): Promise<{
   version: string;
 }> => {
@@ -40,6 +43,21 @@ export default async ({
 
   await exec("sudo", ["mv", "bin/dagger", "/usr/local/bin"]);
   const version = await verifyFluentCI("fluentci");
+
+  if (pipeline) {
+    if (wasm) {
+      if (!args) {
+        throw new Error("args is required when using wasm");
+      }
+      await exec("fluentci", ["run", "--wasm", pipeline, ...args.split(" ")]);
+      return { version };
+    }
+    if (!args) {
+      await exec("fluentci", ["run", pipeline]);
+      return { version };
+    }
+    await exec("fluentci", ["run", pipeline, ...args.split(" ")]);
+  }
 
   return {
     version,

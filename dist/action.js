@@ -6,6 +6,9 @@ if (!process.env.RUNNER_TEMP) {
 }
 setup({
     daggerVersion: action.getInput("dagger-version"),
+    wasm: action.getInput("wasm"),
+    args: action.getInput("args"),
+    pipeline: action.getInput("pipeline"),
 })
     .then(({ version }) => {
     action.setOutput("version", version);
