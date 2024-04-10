@@ -50,7 +50,7 @@ jobs:
         uses: fluentci-io/setup-fluentci@v5
         with:
           wasm: true # set to true so WebAssembly plugins can be used
-          pipeline: base_pipeline # Name of the Wasm Plugin, 
+          pipeline: base # Name of the Wasm Plugin to use without the .wasm extension, 
           # will be downloaded from the registry https://pkg.fluentci.io
 
           # Arguments to pass to the plugin: function_name args
