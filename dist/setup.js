@@ -33,17 +33,34 @@ export default async ({ daggerVersion, wasm, pipeline, args, }) => {
     const version = await verifyFluentCI("fluentci");
     if (pipeline) {
         if (wasm) {
-            if (!args) {
+            if (!args.length) {
                 throw new Error("args is required when using wasm");
             }
-            await exec("fluentci", ["run", "--wasm", pipeline, ...args.split(" ")]);
+            for (const _args of args) {
+                await exec("fluentci", [
+                    "run",
+                    "--wasm",
+                    pipeline,
+                    ..._args.split(" "),
+                ]);
+            }
             return { version };
         }
-        if (!args) {
+        if (!args.length) {
             await exec("fluentci", ["run", pipeline]);
             return { version };
         }
-        await exec("fluentci", ["run", pipeline, ...args.split(" ")]);
+        for (const _args of args) {
+            await exec("fluentci", ["run", pipeline, ..._args.split(" ")]);
+        }
+    }
+    if (!pipeline) {
+        if (args.length) {
+            for (const _args of args) {
+                await exec("fluentci", [..._args.split(" ")]);
+            }
+            return { version };
+        }
     }
     return {
         version,

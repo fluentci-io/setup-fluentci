@@ -7,7 +7,11 @@ if (!process.env.RUNNER_TEMP) {
 setup({
     daggerVersion: action.getInput("dagger-version"),
     wasm: action.getInput("wasm") === "false" ? false : action.getInput("wasm"),
-    args: action.getInput("args"),
+    args: action
+        .getInput("args")
+        .split("\n")
+        .map((arg) => arg.trim())
+        .filter((arg) => arg),
     pipeline: action.getInput("pipeline"),
 })
     .then(({ version }) => {
