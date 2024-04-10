@@ -40,23 +40,20 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   setup-fluentci:
-    runs-on: ${{ matrix.os }}
-    continue-on-error: true
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Setup FluentCI
         uses: fluentci-io/setup-fluentci@v5
         with:
-          wasm: true
-          pipeline: base_pipeline # Name of the Wasm Plugin (reusable pipeline)
-          # Arguments to pass to the pipeline: function_name args
+          wasm: true # set to true so WebAssembly plugins can be used
+          pipeline: base_pipeline # Name of the Wasm Plugin, 
+          # will be downloaded from the registry https://pkg.fluentci.io
+
+          # Arguments to pass to the plugin: function_name args
           args: |
             hello Tsiry Sandratraina
             hello again
