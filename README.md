@@ -7,6 +7,8 @@ Github Action for [FluentCI](https://fluentci.io) - a simple CI/CD tool built fo
 
 ## Usage
 
+Basic usage:
+
 ```yaml
 name: fluentci
 
@@ -27,6 +29,37 @@ jobs:
           dagger-version: 0.11.0
       - name: Run Hello World
         run: fluentci run base_pipeline
+```
+
+With a WebAssembly Plugin:
+
+```yaml
+name: Setup FluentCI With Args
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  setup-fluentci:
+    runs-on: ${{ matrix.os }}
+    continue-on-error: true
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup FluentCI
+        uses: fluentci-io/setup-fluentci@v5
+        with:
+          wasm: true
+          pipeline: base_pipeline # Name of the Wasm Plugin (reusable pipeline)
+          # Arguments to pass to the pipeline: function_name args
+          args: |
+            hello Tsiry Sandratraina
+            hello again
 ```
 
 ## Inputs
