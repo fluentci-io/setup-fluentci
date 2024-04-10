@@ -19,5 +19,4 @@ jobs:
         uses: ./
         with:
           wasm: true
-          pipeline: base_pipeline
-          args: hello Tsiry Sandratraina
+          args: base_pipeline hello Tsiry Sandratraina
