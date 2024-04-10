@@ -34,7 +34,7 @@ jobs:
 With a WebAssembly Plugin:
 
 ```yaml
-name: Setup FluentCI With Args
+name: Hello
 
 on:
   push:
