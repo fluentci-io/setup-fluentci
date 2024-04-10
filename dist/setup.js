@@ -57,7 +57,12 @@ export default async ({ daggerVersion, wasm, pipeline, args, }) => {
     if (!pipeline) {
         if (args.length) {
             for (const _args of args) {
-                await exec("fluentci", [..._args.split(" ")]);
+                if (wasm) {
+                    await exec("fluentci", ["run", "--wasm", ..._args.split(" ")]);
+                }
+                else {
+                    await exec("fluentci", ["run", ..._args.split(" ")]);
+                }
             }
             return { version };
         }
