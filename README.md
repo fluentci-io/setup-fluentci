@@ -67,6 +67,7 @@ jobs:
 | pipeline       | The pipeline (module) to execute                   |         |
 | wasm           | Run the WebAssembly version of the pipeline (if available) |    |
 | args     | Arguments to pass to the pipeline |         |
+| working-directory | The working directory to run the pipeline | . |
 
 
 ## License
