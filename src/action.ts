@@ -15,6 +15,7 @@ setup({
     .map((arg) => arg.trim())
     .filter((arg) => arg),
   pipeline: action.getInput("pipeline"),
+  workdir: action.getInput("working-directory"),
 })
   .then(({ version }) => {
     action.setOutput("version", version);

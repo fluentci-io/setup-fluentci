@@ -18,6 +18,9 @@ inputs:
     description: Dagger version to install
     required: false
     default: 0.11.0
+  working-directory:
+    description: Set the current working directory
+    default: .
 outputs:
   version:
     description: FluentCI CLI version installed

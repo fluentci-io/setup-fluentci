@@ -3,7 +3,7 @@ import { join } from "node:path";
 import * as action from "@actions/core";
 import { getExecOutput, exec } from "@actions/exec";
 import { installDocker } from "./setup-docker.js";
-export default async ({ daggerVersion, wasm, pipeline, args, }) => {
+export default async ({ daggerVersion, wasm, pipeline, args, workdir, }) => {
     // throw error on unsupported platforms (windows)
     if (process.platform === "win32") {
         throw new Error("FluentCI is not supported on Windows");
@@ -37,31 +37,34 @@ export default async ({ daggerVersion, wasm, pipeline, args, }) => {
                 throw new Error("args is required when using wasm");
             }
             for (const _args of args) {
-                await exec("fluentci", [
-                    "run",
-                    "--wasm",
-                    pipeline,
-                    ..._args.split(" "),
-                ]);
+                await exec("fluentci", ["run", "--wasm", pipeline, ..._args.split(" ")], {
+                    cwd: workdir,
+                });
             }
             return { version };
         }
         if (!args.length) {
-            await exec("fluentci", ["run", pipeline]);
+            await exec("fluentci", ["run", pipeline], { cwd: workdir });
             return { version };
         }
         for (const _args of args) {
-            await exec("fluentci", ["run", pipeline, ..._args.split(" ")]);
+            await exec("fluentci", ["run", pipeline, ..._args.split(" ")], {
+                cwd: workdir,
+            });
         }
     }
     if (!pipeline) {
         if (args.length) {
             for (const _args of args) {
                 if (wasm) {
-                    await exec("fluentci", ["run", "--wasm", ..._args.split(" ")]);
+                    await exec("fluentci", ["run", "--wasm", ..._args.split(" ")], {
+                        cwd: workdir,
+                    });
                 }
                 else {
-                    await exec("fluentci", ["run", ..._args.split(" ")]);
+                    await exec("fluentci", ["run", ..._args.split(" ")], {
+                        cwd: workdir,
+                    });
                 }
             }
             return { version };

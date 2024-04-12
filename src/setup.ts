@@ -9,6 +9,7 @@ export default async ({
   wasm,
   pipeline,
   args,
+  workdir,
 }): Promise<{
   version: string;
 }> => {
@@ -52,21 +53,24 @@ export default async ({
         throw new Error("args is required when using wasm");
       }
       for (const _args of args) {
-        await exec("fluentci", [
-          "run",
-          "--wasm",
-          pipeline,
-          ..._args.split(" "),
-        ]);
+        await exec(
+          "fluentci",
+          ["run", "--wasm", pipeline, ..._args.split(" ")],
+          {
+            cwd: workdir,
+          }
+        );
       }
       return { version };
     }
     if (!args.length) {
-      await exec("fluentci", ["run", pipeline]);
+      await exec("fluentci", ["run", pipeline], { cwd: workdir });
       return { version };
     }
     for (const _args of args) {
-      await exec("fluentci", ["run", pipeline, ..._args.split(" ")]);
+      await exec("fluentci", ["run", pipeline, ..._args.split(" ")], {
+        cwd: workdir,
+      });
     }
   }
 
@@ -74,9 +78,13 @@ export default async ({
     if (args.length) {
       for (const _args of args) {
         if (wasm) {
-          await exec("fluentci", ["run", "--wasm", ..._args.split(" ")]);
+          await exec("fluentci", ["run", "--wasm", ..._args.split(" ")], {
+            cwd: workdir,
+          });
         } else {
-          await exec("fluentci", ["run", ..._args.split(" ")]);
+          await exec("fluentci", ["run", ..._args.split(" ")], {
+            cwd: workdir,
+          });
         }
       }
       return { version };
