@@ -14,7 +14,11 @@ setup({
     .split("\n")
     .map((arg) => arg.trim())
     .filter((arg) => arg),
-  pipeline: action.getInput("pipeline"),
+  pipeline:
+    action.getInput("pipeline") ||
+    action.getInput("plugin") ||
+    action.getInput("module") ||
+    action.getInput("extension"),
   workdir: action.getInput("working-directory"),
 })
   .then(({ version }) => {

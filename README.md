@@ -65,6 +65,9 @@ jobs:
 | -------------- | --------------------------------------- | ------- |
 | dagger-version | The version of the Dagger Engine to use | 0.11.0  |
 | pipeline       | The pipeline (module) to execute                   |         |
+| plugin         | Alias for `pipeline` |         |
+| module         | Alias for `pipeline` |         |
+| extension      | Alias for `pipeline` |         |
 | wasm           | Run the WebAssembly version of the pipeline (if available) |    |
 | args     | Arguments to pass to the pipeline |         |
 | working-directory | The working directory to run the pipeline | . |

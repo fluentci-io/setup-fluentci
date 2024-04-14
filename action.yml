@@ -8,6 +8,15 @@ inputs:
   pipeline:
     description: Pipeline to use
     required: false
+  plugin:
+    description: Alias for pipeline
+    required: false
+  module:
+    description: Alias for pipeline
+    required: false
+  extension:
+    description: Alias for pipeline
+    required: false
   wasm:
     description: use WebAssembly
     required: false
