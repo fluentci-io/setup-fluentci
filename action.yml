@@ -27,6 +27,10 @@ inputs:
     description: Dagger version to install
     required: false
     default: 0.11.0
+  engine-version:
+    description: FluentCI engine version to install
+    required: false
+    default: 0.2.6
   working-directory:
     description: Set the current working directory
     default: .

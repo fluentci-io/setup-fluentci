@@ -3,7 +3,7 @@ import { join } from "node:path";
 import * as action from "@actions/core";
 import { getExecOutput, exec } from "@actions/exec";
 import { installDocker } from "./setup-docker.js";
-export default async ({ daggerVersion, wasm, pipeline, args, workdir, }) => {
+export default async ({ daggerVersion, engineVersion, wasm, pipeline, args, workdir, }) => {
     // throw error on unsupported platforms (windows)
     if (process.platform === "win32") {
         throw new Error("FluentCI is not supported on Windows");
@@ -31,6 +31,7 @@ export default async ({ daggerVersion, wasm, pipeline, args, workdir, }) => {
     ]);
     await exec("sudo", ["mv", "bin/dagger", "/usr/local/bin"]);
     const version = await verifyFluentCI("fluentci");
+    action.exportVariable("FLUENTCI_ENGINE_VERSION", engineVersion.startsWith('v') ? engineVersion : `v${engineVersion}`);
     if (pipeline) {
         if (wasm) {
             if (!args.length) {

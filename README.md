@@ -64,6 +64,7 @@ jobs:
 | Key            | Description                             | Default |
 | -------------- | --------------------------------------- | ------- |
 | dagger-version | The version of the Dagger Engine to use | 0.11.0  |
+| engine-version | The version of the FluentCI Engine to use | 0.2.6  |
 | pipeline       | The pipeline (module) to execute                   |         |
 | plugin         | Alias for `pipeline` |         |
 | module         | Alias for `pipeline` |         |

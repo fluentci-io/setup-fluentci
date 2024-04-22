@@ -19,4 +19,5 @@ jobs:
         uses: ./
         with:
           wasm: true
+          engine-version: 0.2.6
           args: base_pipeline hello Tsiry Sandratraina

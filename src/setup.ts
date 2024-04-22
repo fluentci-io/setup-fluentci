@@ -6,6 +6,7 @@ import { installDocker } from "./setup-docker.js";
 
 export default async ({
   daggerVersion,
+  engineVersion,
   wasm,
   pipeline,
   args,
@@ -46,6 +47,8 @@ export default async ({
 
   await exec("sudo", ["mv", "bin/dagger", "/usr/local/bin"]);
   const version = await verifyFluentCI("fluentci");
+
+  action.exportVariable("FLUENTCI_ENGINE_VERSION", engineVersion.startsWith('v') ? engineVersion : `v${engineVersion}`);
 
   if (pipeline) {
     if (wasm) {
