@@ -35,6 +35,8 @@ export default async ({
   await exec("deno", [
     "install",
     "-A",
+    "-g",
+    "-f",
     "-r",
     "https://cli.fluentci.io",
     "-n",
@@ -48,7 +50,10 @@ export default async ({
   await exec("sudo", ["mv", "bin/dagger", "/usr/local/bin"]);
   const version = await verifyFluentCI("fluentci");
 
-  action.exportVariable("FLUENTCI_ENGINE_VERSION", engineVersion.startsWith('v') ? engineVersion : `v${engineVersion}`);
+  action.exportVariable(
+    "FLUENTCI_ENGINE_VERSION",
+    engineVersion.startsWith("v") ? engineVersion : `v${engineVersion}`
+  );
 
   if (pipeline) {
     if (wasm) {
