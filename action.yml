@@ -30,7 +30,6 @@ inputs:
   engine-version:
     description: FluentCI engine version to install
     required: false
-    default: 0.4.0
   working-directory:
     description: Set the current working directory
     default: .
