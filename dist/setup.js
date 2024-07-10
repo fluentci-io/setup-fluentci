@@ -11,8 +11,10 @@ export default async ({ daggerVersion, engineVersion, wasm, pipeline, args, work
     if (!wasm) {
         await installDocker();
     }
-    // add nix and rye to PATH
+    // add nix, mise, vfox and rye to PATH
     action.addPath(join(homedir(), ".rye", "shims"));
+    action.addPath(join(homedir(), ".local", "share", "mise", "shims"));
+    action.addPath(join(homedir(), ".version-fox", "shims"));
     action.addPath(join(homedir(), ".nix-profile", "bin"));
     action.addPath("/nix/var/nix/profiles/default/bin");
     await exec("sh", [
