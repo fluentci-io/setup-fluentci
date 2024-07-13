@@ -63,7 +63,7 @@ jobs:
 
 | Key            | Description                             | Default |
 | -------------- | --------------------------------------- | ------- |
-| dagger-version | The version of the Dagger Engine to use | 0.11.7  |
+| dagger-version | The version of the Dagger Engine to use | 0.12.0  |
 | engine-version | The version of the FluentCI Engine to use |   |
 | pipeline       | The pipeline (module) to execute                   |         |
 | plugin         | Alias for `pipeline` |         |
