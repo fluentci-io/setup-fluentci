@@ -29,6 +29,7 @@ export default async ({
   action.addPath(join(homedir(), ".version-fox", "shims"));
   action.addPath(join(homedir(), ".nix-profile", "bin"));
   action.addPath("/nix/var/nix/profiles/default/bin");
+  action.addPath("/home/linuxbrew/.linuxbrew/bin");
 
   await exec("sh", [
     "-c",
