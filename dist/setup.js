@@ -16,6 +16,7 @@ export default async ({ daggerVersion, engineVersion, wasm, pipeline, args, work
     action.addPath(join(homedir(), ".local", "share", "mise", "shims"));
     action.addPath(join(homedir(), ".version-fox", "shims"));
     action.addPath(join(homedir(), ".nix-profile", "bin"));
+    action.addPath(join(homedir(), ".local", "bin"));
     action.addPath("/nix/var/nix/profiles/default/bin");
     action.addPath("/home/linuxbrew/.linuxbrew/bin");
     await exec("sh", [
