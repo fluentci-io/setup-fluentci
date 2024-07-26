@@ -18,3 +18,5 @@ jobs:
           dagger-version: 0.12.0
           pipeline: base_pipeline
           args: hello
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}

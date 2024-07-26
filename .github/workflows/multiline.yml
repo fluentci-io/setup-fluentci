@@ -23,3 +23,5 @@ jobs:
           args: |
             hello Tsiry Sandratraina
             hello again
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
