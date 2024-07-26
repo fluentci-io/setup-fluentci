@@ -19,6 +19,8 @@ jobs:
         uses: ./
         with:
           dagger-version: 0.12.0
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Verify FluentCI
         run: |
           fluentci doctor || true
@@ -29,3 +31,5 @@ jobs:
         run: dagger version
       - name: Run Hello World
         run: fluentci run base_pipeline
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
