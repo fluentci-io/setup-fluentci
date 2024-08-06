@@ -11,7 +11,7 @@ export default async ({ daggerVersion, engineVersion, wasm, pipeline, args, work
     if (!wasm) {
         await installDocker();
     }
-    // add nix, mise, vfox, moon, bun and rye to PATH
+    // add nix, mise, vfox, moon, bun, arkade and rye to PATH
     action.addPath(join(homedir(), ".rye", "shims"));
     action.addPath(join(homedir(), ".local", "share", "mise", "shims"));
     action.addPath(join(homedir(), ".version-fox", "shims"));
@@ -19,6 +19,7 @@ export default async ({ daggerVersion, engineVersion, wasm, pipeline, args, work
     action.addPath(join(homedir(), ".bun", "bin"));
     action.addPath(join(homedir(), ".nix-profile", "bin"));
     action.addPath(join(homedir(), ".local", "bin"));
+    action.addPath(join(homedir(), ".arkade", "bin"));
     action.addPath("/nix/var/nix/profiles/default/bin");
     action.addPath("/home/linuxbrew/.linuxbrew/bin");
     await exec("sh", [
