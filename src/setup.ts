@@ -37,7 +37,7 @@ export default async ({
 
   await exec("sh", [
     "-c",
-    "curl -fsSL https://deno.land/x/install/install.sh | sh",
+    "curl -fsSL https://deno.land/x/install/install.sh | sh -s v1.46.3",
   ]);
 
   action.addPath(join(homedir(), ".deno", "bin"));
