@@ -1,7 +1,7 @@
 import { homedir } from "node:os";
 import { join } from "node:path";
 import * as action from "@actions/core";
-import { getExecOutput, exec } from "@actions/exec";
+import { exec, getExecOutput } from "@actions/exec";
 import { installDocker } from "./setup-docker.js";
 export default async ({ daggerVersion, engineVersion, wasm, pipeline, args, workdir, }) => {
     // throw error on unsupported platforms (windows)
@@ -24,7 +24,7 @@ export default async ({ daggerVersion, engineVersion, wasm, pipeline, args, work
     action.addPath("/home/linuxbrew/.linuxbrew/bin");
     await exec("sh", [
         "-c",
-        "curl -fsSL https://deno.land/x/install/install.sh | sh -s v1.46.3",
+        "curl -fsSL https://deno.land/x/install/install.sh | sh -s v2.1.4",
     ]);
     action.addPath(join(homedir(), ".deno", "bin"));
     await exec("deno", ["--version"]);

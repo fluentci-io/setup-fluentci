@@ -1,7 +1,7 @@
 import { homedir } from "node:os";
 import { join } from "node:path";
 import * as action from "@actions/core";
-import { getExecOutput, exec } from "@actions/exec";
+import { exec, getExecOutput } from "@actions/exec";
 import { installDocker } from "./setup-docker.js";
 
 export default async ({
@@ -37,7 +37,7 @@ export default async ({
 
   await exec("sh", [
     "-c",
-    "curl -fsSL https://deno.land/x/install/install.sh | sh -s v1.46.3",
+    "curl -fsSL https://deno.land/x/install/install.sh | sh -s v2.1.4",
   ]);
 
   action.addPath(join(homedir(), ".deno", "bin"));
@@ -65,7 +65,7 @@ export default async ({
   if (engineVersion) {
     action.exportVariable(
       "FLUENTCI_ENGINE_VERSION",
-      engineVersion.startsWith("v") ? engineVersion : `v${engineVersion}`
+      engineVersion.startsWith("v") ? engineVersion : `v${engineVersion}`,
     );
   }
 
@@ -80,7 +80,7 @@ export default async ({
           ["run", "--wasm", pipeline, ..._args.split(" ")],
           {
             cwd: workdir,
-          }
+          },
         );
       }
       return { version };
