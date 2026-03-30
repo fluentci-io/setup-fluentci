@@ -24,7 +24,7 @@ export default async ({ daggerVersion, engineVersion, wasm, pipeline, args, work
     action.addPath("/home/linuxbrew/.linuxbrew/bin");
     await exec("sh", [
         "-c",
-        "curl -fsSL https://deno.land/x/install/install.sh | sh -s v2.1.4",
+        "curl -fsSL https://deno.land/x/install/install.sh | sh -s v2.7.9",
     ]);
     action.addPath(join(homedir(), ".deno", "bin"));
     await exec("deno", ["--version"]);
