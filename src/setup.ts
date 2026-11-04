@@ -2,125 +2,72 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import * as action from "@actions/core";
 import { exec, getExecOutput } from "@actions/exec";
-import { installDocker } from "./setup-docker.js";
+import { parse } from "shell-quote";
 
-export default async ({
-  daggerVersion,
-  engineVersion,
+interface SetupOptions {
+  version?: string;
+  wasm: boolean;
+  pipeline: string;
+  args: string[];
+  workdir: string;
+}
+
+export default async function setup({
+  version,
   wasm,
   pipeline,
   args,
   workdir,
-}): Promise<{
-  version: string;
-}> => {
-  // throw error on unsupported platforms (windows)
+}: SetupOptions): Promise<{ version: string }> {
   if (process.platform === "win32") {
     throw new Error("FluentCI is not supported on Windows");
   }
 
-  if (!wasm) {
-    await installDocker();
+  const installDir = join(homedir(), ".local", "bin");
+  // Pass overrides to sh, as documented by the CLI's curl installer.
+  // pipefail prevents a failed download from appearing to install successfully.
+  await exec(
+    "bash",
+    [
+      "-o",
+      "pipefail",
+      "-c",
+      "curl -fsSL https://raw.githubusercontent.com/tsirysndr/fluentci/main/install.sh | sh",
+    ],
+    {
+      env: {
+        ...process.env,
+        FLUENTCI_INSTALL_DIR: installDir,
+        FLUENTCI_VERSION: version || process.env.FLUENTCI_VERSION || "",
+      },
+    }
+  );
+  action.addPath(installDir);
+
+  const fluentci = join(installDir, "fluentci");
+  const { stdout } = await getExecOutput(fluentci, ["--version"]);
+  const installedVersion = stdout.trim();
+  if (!installedVersion) {
+    throw new Error("FluentCI did not report its installed version");
   }
 
-  // add nix, mise, vfox, moon, bun, arkade and rye to PATH
-  action.addPath(join(homedir(), ".rye", "shims"));
-  action.addPath(join(homedir(), ".local", "share", "mise", "shims"));
-  action.addPath(join(homedir(), ".version-fox", "shims"));
-  action.addPath(join(homedir(), ".moon", "bin"));
-  action.addPath(join(homedir(), ".bun", "bin"));
-  action.addPath(join(homedir(), ".nix-profile", "bin"));
-  action.addPath(join(homedir(), ".local", "bin"));
-  action.addPath(join(homedir(), ".arkade", "bin"));
-  action.addPath("/nix/var/nix/profiles/default/bin");
-  action.addPath("/home/linuxbrew/.linuxbrew/bin");
-
-  await exec("sh", [
-    "-c",
-    "curl -fsSL https://deno.land/x/install/install.sh | sh -s v2.7.9",
-  ]);
-
-  action.addPath(join(homedir(), ".deno", "bin"));
-
-  await exec("deno", ["--version"]);
-
-  await exec("deno", [
-    "install",
-    "-A",
-    "-g",
-    "-f",
-    "-r",
-    "https://cli.fluentci.io",
-    "-n",
-    "fluentci",
-  ]);
-  await exec("sh", [
-    "-c",
-    `curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=${daggerVersion} sh`,
-  ]);
-
-  await exec("sudo", ["mv", "bin/dagger", "/usr/local/bin"]);
-  const version = await verifyFluentCI("fluentci");
-
-  if (engineVersion) {
-    action.exportVariable(
-      "FLUENTCI_ENGINE_VERSION",
-      engineVersion.startsWith("v") ? engineVersion : `v${engineVersion}`,
-    );
-  }
-
-  if (pipeline) {
-    if (wasm) {
-      if (!args.length) {
-        throw new Error("args is required when using wasm");
+  // With no pipeline or arguments this action only installs the CLI.
+  if (pipeline || args.length) {
+    for (const line of args.length ? args : [""]) {
+      // Preserve quoted arguments without executing shell substitutions.
+      const parsed = parse(line, (name) => `$${name}`);
+      if (parsed.some((arg) => typeof arg !== "string")) {
+        throw new Error("args must contain CLI arguments, not shell operators");
       }
-      for (const _args of args) {
-        await exec(
-          "fluentci",
-          ["run", "--wasm", pipeline, ..._args.split(" ")],
-          {
-            cwd: workdir,
-          },
-        );
-      }
-      return { version };
-    }
-    if (!args.length) {
-      await exec("fluentci", ["run", pipeline], { cwd: workdir });
-      return { version };
-    }
-    for (const _args of args) {
-      await exec("fluentci", ["run", pipeline, ..._args.split(" ")], {
-        cwd: workdir,
-      });
+      await exec(fluentci, [
+        "run",
+        ...(wasm ? ["--wasm"] : []),
+        "--work-dir",
+        workdir || ".",
+        ...(pipeline ? [pipeline] : []),
+        ...(parsed as string[]),
+      ]);
     }
   }
-
-  if (!pipeline) {
-    if (args.length) {
-      for (const _args of args) {
-        if (wasm) {
-          await exec("fluentci", ["run", "--wasm", ..._args.split(" ")], {
-            cwd: workdir,
-          });
-        } else {
-          await exec("fluentci", ["run", ..._args.split(" ")], {
-            cwd: workdir,
-          });
-        }
-      }
-      return { version };
-    }
-  }
-
-  return {
-    version,
-  };
-};
-
-async function verifyFluentCI(path: string): Promise<string | undefined> {
-  const { exitCode, stdout } = await getExecOutput(path, ["--version"], {
-    ignoreReturnCode: true,
-  });
-  return exitCode === 0 ? stdout.trim() : undefined;
+  return { version: installedVersion };
 }

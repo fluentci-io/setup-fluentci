@@ -1,0 +1,17 @@
+name: Validate action
+on:
+  push:
+    branches: [main, next]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun test
+      - run: bun run build
+      - run: git diff --exit-code -- dist/action.cjs

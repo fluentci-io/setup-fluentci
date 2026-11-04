@@ -1,22 +1,35 @@
-name: Setup FluentCI With Params
+name: Run configured steps
 
 on:
   push:
-    branches:
-      - main
+    branches: [main, next]
+  pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
-  setup-fluentci:
-    runs-on: ubuntu-latest
-    continue-on-error: true
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, ubuntu-24.04-arm, macos-15-intel]
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup FluentCI
-        uses: ./
+      - uses: actions/checkout@v4
+      - name: Create shell pipeline fixture
+        run: |
+          mkdir -p fixture
+          cat > fixture/fluentci.toml <<'TOML'
+          [package]
+          name = "action-test"
+          version = "0.1.0"
+          [[steps]]
+          name = "hello"
+          command = "echo Hello from FluentCI"
+          TOML
+      - uses: ./
         with:
-          dagger-version: 0.12.0
-          pipeline: base_pipeline
+          pipeline: .
+          working-directory: fixture
           args: hello
-        env:
-          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}

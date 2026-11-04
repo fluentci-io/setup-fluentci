@@ -1,79 +1,110 @@
-# About
+# Setup FluentCI
 
-[![Setup FluentCI](https://github.com/fluentci-io/setup-fluentci/actions/workflows/setup.yml/badge.svg)](https://github.com/fluentci-io/setup-fluentci/actions/workflows/setup.yml)
-[![GitHub marketplace](https://img.shields.io/badge/marketplace-setup--fluentci-blue?logo=github&style)](https://github.com/marketplace/actions/setup-fluentci)
+GitHub Action to install the [FluentCI CLI](https://github.com/tsirysndr/fluentci)
+and optionally run a pipeline, workspace module, or WebAssembly plugin.
 
-Github Action for [FluentCI](https://fluentci.io) - a simple CI/CD tool built for developers. With FluentCI you can write your CI/CD pipelines in TypeScript and run them on your local machine, on your own server or in the cloud.
+The action follows the CLI's curl installation:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/tsirysndr/fluentci/main/install.sh | sh
+```
+
+The installer selects the platform archive, verifies its SHA-256 checksum, and
+installs the executable into `~/.local/bin`. The action adds that directory to
+`PATH` and verifies `fluentci --version`. Linux and macOS runners on x86_64 and
+ARM64 are supported; Windows is not supported.
 
 ## Usage
 
-Basic usage:
+Install the CLI, then use any of its commands in subsequent steps:
 
 ```yaml
-name: fluentci
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: FluentCI
-        uses: fluentci-io/setup-fluentci@v5
-        with:
-          dagger-version: 0.12.0
-      - name: Run Hello World
-        run: fluentci run base_pipeline
+steps:
+  - uses: actions/checkout@v4
+  - uses: fluentci-io/setup-fluentci@next
+    with:
+      version: '2026.11.04' # Optional; omit to use the installer's default release
+  - run: fluentci run
 ```
 
-With a WebAssembly Plugin:
+Run a declared workspace module (no `wasm` flag needed):
 
 ```yaml
-name: Hello
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  setup-fluentci:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup FluentCI
-        uses: fluentci-io/setup-fluentci@v5
-        with:
-          wasm: true # set to true so WebAssembly plugins can be used
-          plugin: base # Name of the Wasm Plugin to use without the .wasm extension, 
-          # will be downloaded from the registry https://pkg.fluentci.io
-
-          # Arguments to pass to the plugin: function_name args
-          args: |
-            hello Tsiry Sandratraina
-            hello again
+- uses: fluentci-io/setup-fluentci@next
+  with:
+    module: main
+    args: hello
+    working-directory: ./my-project
 ```
+
+Run a published or compiled WebAssembly plugin:
+
+```yaml
+- uses: fluentci-io/setup-fluentci@next
+  with:
+    wasm: true
+    plugin: rust # Or a path to a compiled .wasm file
+    args: test
+```
+
+Each nonempty `args` line runs separately. Quotes preserve arguments containing
+spaces; these lines are CLI arguments and do not execute shell commands:
+
+```yaml
+- uses: fluentci-io/setup-fluentci@next
+  with:
+    module: main
+    args: |
+      hello "Tsiry Sandratraina"
+      hello again
+```
+
+To run configured steps, set `pipeline: .` and optionally select a step with
+`args: check`. Without a pipeline input, `args` supplies the arguments following
+`fluentci run` (for example, `args: main hello`). Without either input, the action
+only installs the CLI. For other subcommands, use a subsequent `run` step.
 
 ## Inputs
 
-| Key            | Description                             | Default |
-| -------------- | --------------------------------------- | ------- |
-| dagger-version | The version of the Dagger Engine to use | 0.12.0  |
-| engine-version | The version of the FluentCI Engine to use |   |
-| pipeline       | The pipeline (module) to execute                   |         |
-| plugin         | Alias for `pipeline` |         |
-| module         | Alias for `pipeline` |         |
-| extension      | Alias for `pipeline` |         |
-| wasm           | Run the WebAssembly version of the pipeline (if available) |    |
-| args     | Arguments to pass to the pipeline |         |
-| working-directory | The working directory to run the pipeline | . |
+| Key | Description | Default |
+| --- | --- | --- |
+| version | Exact CLI release tag; also accepts `FLUENTCI_VERSION` from the environment | Installer default (currently `2026.11.04`) |
+| pipeline | Declared module, pipeline, registry package, or path to execute | |
+| plugin | Alias for `pipeline` | |
+| module | Alias for `pipeline` | |
+| extension | Alias for `pipeline` | |
+| wasm | Pass `--wasm` for published or compiled WebAssembly plugins | `false` |
+| args | Arguments following `fluentci run [--wasm] [pipeline]`; one invocation per line | |
+| working-directory | Execution directory, passed through `--work-dir` | `.` |
 
+When multiple pipeline aliases are supplied, precedence is `pipeline`, `plugin`,
+`module`, then `extension`.
+
+## Outputs
+
+| Key | Description |
+| --- | --- |
+| version | Full output of `fluentci --version` |
+
+## Migrating from v5
+
+The new CLI embeds its engine and Studio. The `dagger-version` and
+`engine-version` inputs have been removed. The action no longer installs Deno,
+Dagger, Docker, or a separate engine. If you run legacy TypeScript/Dagger
+pipelines, provision their runtime dependencies yourself. Source modules also
+need the build tools for their chosen SDK; compiled Wasm plugins do not.
+
+## Development
+
+```sh
+bun install --frozen-lockfile
+bun test
+bun run build
+```
+
+Commit the rebuilt `dist/action.cjs` with source changes; GitHub runs this bundle
+without installing npm dependencies.
 
 ## License
 
-The scripts and documentation in this project are released under the [MIT License](LICENSE)
+Released under the [MIT License](LICENSE).
