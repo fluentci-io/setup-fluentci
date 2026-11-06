@@ -19424,7 +19424,7 @@ async function setup({
       "-o",
       "pipefail",
       "-c",
-      "curl -fsSL https://raw.githubusercontent.com/tsirysndr/fluentci/main/install.sh | sh"
+      "curl -fsSL https://raw.githubusercontent.com/fluentci-io/fluentci/main/install.sh | sh"
     ],
     {
       env: {

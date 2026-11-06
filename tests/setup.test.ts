@@ -32,7 +32,7 @@ test("curl install only, explicit version is passed as environment data", async 
     "-o",
     "pipefail",
     "-c",
-    "curl -fsSL https://raw.githubusercontent.com/tsirysndr/fluentci/main/install.sh | sh",
+    "curl -fsSL https://raw.githubusercontent.com/fluentci-io/fluentci/main/install.sh | sh",
   ]);
   expect(exec.mock.calls[0][2].env.FLUENTCI_VERSION).toBe(version);
   expect(exec.mock.calls[0][2].env.FLUENTCI_INSTALL_DIR).toBe(

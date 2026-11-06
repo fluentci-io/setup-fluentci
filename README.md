@@ -1,12 +1,12 @@
 # Setup FluentCI
 
-GitHub Action to install the [FluentCI CLI](https://github.com/tsirysndr/fluentci)
+GitHub Action to install the [FluentCI CLI](https://github.com/fluentci-io/fluentci)
 and optionally run a pipeline, workspace module, or WebAssembly plugin.
 
 The action follows the CLI's curl installation:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/tsirysndr/fluentci/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/fluentci-io/fluentci/main/install.sh | sh
 ```
 
 The installer selects the platform archive, verifies its SHA-256 checksum, and
@@ -23,7 +23,7 @@ steps:
   - uses: actions/checkout@v4
   - uses: fluentci-io/setup-fluentci@next
     with:
-      version: '2026.11.04' # Optional; omit to use the installer's default release
+      version: 'v0.17.0' # Optional; omit to install the latest release
   - run: fluentci run
 ```
 
@@ -68,7 +68,7 @@ only installs the CLI. For other subcommands, use a subsequent `run` step.
 
 | Key | Description | Default |
 | --- | --- | --- |
-| version | Exact CLI release tag; also accepts `FLUENTCI_VERSION` from the environment | Installer default (currently `2026.11.04`) |
+| version | Exact CLI release tag; also accepts `FLUENTCI_VERSION` from the environment | Latest upstream release |
 | pipeline | Declared module, pipeline, registry package, or path to execute | |
 | plugin | Alias for `pipeline` | |
 | module | Alias for `pipeline` | |

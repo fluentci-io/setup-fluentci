@@ -24,7 +24,7 @@ inputs:
     description: Arguments to pass to FluentCI CLI
     required: false
   version:
-    description: FluentCI release tag to install (defaults to the curl installer's release)
+    description: FluentCI release tag to install (defaults to the latest upstream release)
     required: false
   working-directory:
     description: Set the current working directory
