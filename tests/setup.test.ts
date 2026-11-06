@@ -5,7 +5,7 @@ import { join } from "node:path";
 const exec = mock(async (..._args: any[]) => 0);
 const getExecOutput = mock(async (..._args: any[]) => ({
   exitCode: 0,
-  stdout: "fluentci 2026.11.04\n",
+  stdout: "fluentci 0.17.0\n",
   stderr: "",
 }));
 const addPath = mock((..._args: any[]) => {});
@@ -22,9 +22,9 @@ beforeEach(() => {
 });
 
 test("curl install only, explicit version is passed as environment data", async () => {
-  const version = "2026.11.04";
+  const version = "v0.17.0";
   expect(await setup({ ...defaults, version })).toEqual({
-    version: "fluentci 2026.11.04",
+    version: "fluentci 0.17.0",
   });
   expect(exec).toHaveBeenCalledTimes(1);
   expect(exec.mock.calls[0][0]).toBe("bash");
@@ -97,4 +97,22 @@ test("version verification failures stop before pipeline execution", async () =>
     "binary failed"
   );
   expect(exec).toHaveBeenCalledTimes(1);
+});
+
+
+test("defaults to v0.17.0 even with a stale inherited version", async () => {
+  const previous = process.env.FLUENTCI_VERSION;
+  process.env.FLUENTCI_VERSION = "2026.11.04";
+  try {
+    await setup(defaults);
+    expect(exec.mock.calls[0][2].env.FLUENTCI_VERSION).toBe("v0.17.0");
+  } finally {
+    if (previous === undefined) delete process.env.FLUENTCI_VERSION;
+    else process.env.FLUENTCI_VERSION = previous;
+  }
+});
+
+test("allows latest as an explicit version override", async () => {
+  await setup({ ...defaults, version: "latest" });
+  expect(exec.mock.calls[0][2].env.FLUENTCI_VERSION).toBe("latest");
 });

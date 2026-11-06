@@ -23,7 +23,7 @@ steps:
   - uses: actions/checkout@v4
   - uses: fluentci-io/setup-fluentci@next
     with:
-      version: 'v0.17.0' # Optional; omit to install the latest release
+      version: 'v0.17.0' # Default; use 'latest' to install the newest release
   - run: fluentci run
 ```
 
@@ -68,7 +68,7 @@ only installs the CLI. For other subcommands, use a subsequent `run` step.
 
 | Key | Description | Default |
 | --- | --- | --- |
-| version | Exact CLI release tag; also accepts `FLUENTCI_VERSION` from the environment | Latest upstream release |
+| version | CLI release tag, or `latest` | `v0.17.0` |
 | pipeline | Declared module, pipeline, registry package, or path to execute | |
 | plugin | Alias for `pipeline` | |
 | module | Alias for `pipeline` | |
