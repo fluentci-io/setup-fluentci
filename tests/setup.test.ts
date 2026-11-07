@@ -100,12 +100,12 @@ test("version verification failures stop before pipeline execution", async () =>
 });
 
 
-test("defaults to v0.17.0 even with a stale inherited version", async () => {
+test("defaults to latest even with a stale inherited version", async () => {
   const previous = process.env.FLUENTCI_VERSION;
   process.env.FLUENTCI_VERSION = "2026.11.04";
   try {
     await setup(defaults);
-    expect(exec.mock.calls[0][2].env.FLUENTCI_VERSION).toBe("v0.17.0");
+    expect(exec.mock.calls[0][2].env.FLUENTCI_VERSION).toBe("latest");
   } finally {
     if (previous === undefined) delete process.env.FLUENTCI_VERSION;
     else process.env.FLUENTCI_VERSION = previous;

@@ -38,7 +38,7 @@ export default async function setup({
       env: {
         ...process.env,
         FLUENTCI_INSTALL_DIR: installDir,
-        FLUENTCI_VERSION: version?.trim() || "v0.17.0",
+        FLUENTCI_VERSION: version?.trim() || "latest",
       },
     }
   );

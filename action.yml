@@ -24,8 +24,8 @@ inputs:
     description: Arguments to pass to FluentCI CLI
     required: false
   version:
-    description: FluentCI release tag to install (defaults to v0.17.0; use latest for the newest release)
-    default: v0.17.0
+    description: FluentCI release tag to install (defaults to the latest release)
+    default: latest
     required: false
   working-directory:
     description: Set the current working directory

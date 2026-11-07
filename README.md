@@ -16,16 +16,16 @@ ARM64 are supported; Windows is not supported.
 
 ## Usage
 
-Install the CLI, then use any of its commands in subsequent steps:
+Install the latest CLI release, then use any of its commands in subsequent steps:
 
 ```yaml
 steps:
   - uses: actions/checkout@v4
   - uses: fluentci-io/setup-fluentci@next
-    with:
-      version: 'v0.17.0' # Default; use 'latest' to install the newest release
   - run: fluentci run
 ```
+
+Set the optional `version` input only when a specific release is required.
 
 Run a declared workspace module (no `wasm` flag needed):
 
@@ -68,7 +68,7 @@ only installs the CLI. For other subcommands, use a subsequent `run` step.
 
 | Key | Description | Default |
 | --- | --- | --- |
-| version | CLI release tag, or `latest` | `v0.17.0` |
+| version | CLI release tag, or `latest` | `latest` |
 | pipeline | Declared module, pipeline, registry package, or path to execute | |
 | plugin | Alias for `pipeline` | |
 | module | Alias for `pipeline` | |
